@@ -1,15 +1,9 @@
 # Build artifacts
-dist/
-obj/
-results/
+/dist/
+/obj/
+/results/
 *.o
 *.a
-
-# Benchmark/sample CSV output
-*.csv
-
-# Generated figures (make run / bench / images)
-images/
 
 # Python virtual environment
 .venv/

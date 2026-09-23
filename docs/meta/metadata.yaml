@@ -1,0 +1,24 @@
+---
+title: Parallel Numerical Simulation of Electromagnetic Wave Propagation Using the Finite-Difference Time-Domain Method
+subtitle: BSc Thesis (English Translation)
+author: Ivan Janevski
+date: September 2026
+lang: en-US
+documentclass: report
+papersize: a4
+classoption:
+  - 12pt
+geometry:
+  - margin=1in
+toc: true
+numbersections: true
+colorlinks: true
+link-citations: true
+bibliography: docs/meta/references.bib
+csl: docs/meta/ieee.csl
+indent: true
+header-includes:
+  - \usepackage{indentfirst}
+  - \usepackage{caption}
+  - \captionsetup{labelfont=bf,textfont=bf}
+...

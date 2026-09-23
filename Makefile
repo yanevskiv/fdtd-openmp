@@ -8,6 +8,8 @@ TOOLS_DIR   = tools
 INCLUDE_DIR = include
 SRC_DIR     = src
 RESULTS_DIR = results
+DOCS_DIR    = docs
+DOCS_META_DIR = $(DOCS_DIR)/meta
 
 LIB       = $(DIST_DIR)/lib/libfdtd.a
 HEADER    = $(DIST_DIR)/include/fdtd.h
@@ -18,8 +20,21 @@ MAIN      = $(DIST_DIR)/bin/fdtd
 BENCH     = $(DIST_DIR)/bin/benchmark
 TOOLS     = $(DIST_DIR)/bin/tools
 BUILDINFO = $(DIST_DIR)/buildinfo
+DOCS_DIST_DIR = $(DIST_DIR)/docs
+DOCS_PDF      = $(DOCS_DIST_DIR)/Fdtd_Thesis.pdf
+DOCS_METADATA   = $(DOCS_META_DIR)/metadata.yaml
+DOCS_REFERENCES = $(DOCS_META_DIR)/references.bib
+DOCS_CSL        = $(DOCS_META_DIR)/ieee.csl
+DOCS_SOURCES := \
+	$(wildcard $(DOCS_DIR)/Chapter*.md) \
+	$(wildcard $(DOCS_DIR)/References.md) \
+	$(wildcard $(DOCS_DIR)/List_of_Abbreviations.md) \
+	$(wildcard $(DOCS_DIR)/List_of_Figures.md) \
+	$(wildcard $(DOCS_DIR)/List_of_Tables.md) \
+	$(wildcard $(DOCS_DIR)/Appendix*.md)
 
 PY           = python3
+PANDOC       = pandoc
 IMAGES_DIR   = $(RESULTS_DIR)/images
 GAUSS_CSV    = $(RESULTS_DIR)/gauss.csv
 BENCH_CSV    = $(RESULTS_DIR)/benchmark.csv
@@ -31,13 +46,13 @@ BENCH_NSTEPS = 1024
 BENCH_REPEAT = 10
 BENCH_SIZES  = 10000 20000 40000 80000 160000 320000 640000 1280000
 
-.PHONY: build all gauss gauss_images bench bench_images figures images buildinfo clean
+.PHONY: build all docs gauss gauss_images bench bench_images figures images buildinfo clean
 
 .DELETE_ON_ERROR:
 
 build: $(LIB) $(HEADER) $(MAIN) $(BENCH) $(TOOLS) $(BUILDINFO)
 
-all: build images
+all: build images docs
 
 $(LIB): $(OBJ) | $(DIST_DIR)/lib
 	$(RM) $@
@@ -82,6 +97,9 @@ $(DIST_DIR)/bin:
 $(DIST_DIR)/lib:
 	@mkdir -p $@
 
+$(DOCS_DIST_DIR):
+	@mkdir -p $@
+
 $(DIST_DIR)/include/fdtd:
 	@mkdir -p $@
 
@@ -115,11 +133,21 @@ $(FIGURE_IMAGES): $(TOOLS_DIR)/plot_figures.py | $(IMAGES_DIR)
 	$(PY) $(TOOLS_DIR)/plot_figures.py -O $(IMAGES_DIR)
 	@touch $@
 
+$(DOCS_PDF): $(DOCS_METADATA) $(DOCS_REFERENCES) $(DOCS_CSL) $(DOCS_SOURCES) | $(DOCS_DIST_DIR)
+	$(PANDOC) --from=markdown            \
+		--citeproc                       \
+		--pdf-engine=lualatex            \
+		--metadata-file=$(DOCS_METADATA) \
+		--resource-path=$(DOCS_DIR)      \
+		$(DOCS_SOURCES) -o $@
+
 gauss_images: $(GAUSS_IMAGES)
 
 bench_images: $(BENCH_IMAGES)
 
 figures: $(FIGURE_IMAGES)
+
+docs: $(DOCS_PDF)
 
 images: gauss_images bench_images figures
 

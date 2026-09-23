@@ -1,6 +1,6 @@
 # FDTD-HPC
 
-FDTD-HPC is a high-performance one-dimensional electromagnetic-wave simulator based on the finite-difference time-domain (FDTD) method, with serial and OpenMP execution, configurable materials and boundaries, CSV state export, plotting tools, and benchmarking support.
+FDTD-HPC is a high-performance one-dimensional electromagnetic-wave simulator based on the finite-difference time-domain (FDTD) method, with serial and OpenMP execution, configurable materials and boundaries, CSV state export, plotting tools, and benchmarking support. The `docs/` directory contains the English thesis sources and the results used in the document.
 
 ## Configuration
 
@@ -18,6 +18,14 @@ Display the command-line options with:
 ```sh
 dist/bin/fdtd --help
 ```
+
+Build the thesis PDF with Pandoc and LuaLaTeX:
+
+```sh
+make docs
+```
+
+The generated document is written to `dist/docs/Fdtd_Thesis.pdf`. The `all` target builds the software, figures, and thesis.
 
 ## Project structure
 
@@ -41,6 +49,7 @@ After `make clean`, the project source tree is:
 │   │   ├── fdtd_ez.h                   - Ez module header
 │   │   └── fdtd_types.h                - Data type header
 │   └── fdtd.h                          - Public API header
+├── docs                                - English thesis sources and results
 ├── src                                 - Source file directory
 │   ├── fdtd                            - FDTD source file directory
 │   │   ├── Ez                          - Ez simulation source directory
