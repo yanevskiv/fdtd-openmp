@@ -1,6 +1,6 @@
 CC = gcc
 AR = ar
-CFLAGS = -O3 -march=native -fopenmp -Wall -Iinclude
+CFLAGS = -O3 -march=x86-64-v2 -fopenmp -Wall -Iinclude
 
 DIST_DIR    = dist
 OBJ_DIR     = obj

@@ -29,9 +29,16 @@ static void Bench_ShowHelp(const char *prog)
         "      --repeat=R         Number of repetitions (default: 1)\n"
         "      --get-header       Print only the CSV header\n"
         "      --no-header        Do not print the CSV header\n"
-        "  -h, --help             Show help\n",
+        "  -h, --help             Show help\n"
+        "  -v, --version          Show program version\n",
         prog
     );
+}
+
+// Print program version
+static void Bench_ShowVersion(void)
+{
+    fprintf(stderr, "%s\n", FDTD_VERSION);
 }
 
 // Gaussian pulse (f1=t0, f2=spread, f3=center)
@@ -142,12 +149,13 @@ int main(int argc, char **argv)
         { "repeat",      required_argument, NULL, OPT_REPEAT      },
         { "get-header",  no_argument,       NULL, OPT_GET_HEADER  },
         { "no-header",   no_argument,       NULL, OPT_NO_HEADER   },
+        { "version",     no_argument,       NULL, 'v'             },
         { NULL, 0, NULL, 0 }
     };
 
     // Process command-line arguments
     int opt;
-    while ((opt = getopt_long(argc, argv, "K:N:h", options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "K:N:hv", options, NULL)) != -1) {
         switch (opt) {
             default: {
                 Bench_ShowHelp(argv[0]);
@@ -156,6 +164,11 @@ int main(int argc, char **argv)
 
             case 'h': {
                 Bench_ShowHelp(argv[0]);
+                return EXIT_SUCCESS;
+            } break;
+
+            case 'v': {
+                Bench_ShowVersion();
                 return EXIT_SUCCESS;
             } break;
 

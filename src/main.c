@@ -84,7 +84,7 @@ static void Main_ShowHelp(const char *prog)
         "      --get-dt                          Time step dt (dt = S * dx / c)\n"
         "  -i, --input-csv=CSV                   Load initial state from a CSV file\n"
         "  -h, --help                            Show this message and exit\n"
-        "  -V, --version                         Show program information\n"
+        "  -v, --version                         Show program version\n"
         "\n"
         "Examples:\n"
         "  fdtd --set-width=200 --add-pulse --run=200 simulation.csv\n"
@@ -92,10 +92,10 @@ static void Main_ShowHelp(const char *prog)
     fprintf(stderr, usage, prog);
 }
 
-// Print program information
+// Print program version
 static void Main_ShowVersion(void)
 {
-    fprintf(stderr, "FDTD-HPC simulation package\n");
+    fprintf(stderr, "%s\n", FDTD_VERSION);
 }
 
 // Parse up to n comma-separated values; return the number read
@@ -202,12 +202,12 @@ int main(int argc, char **argv)
         { "get-dt",      no_argument,       0, OPT_GET_DT     },
         { "input-csv",   required_argument, 0, 'i'            },
         { "help",        no_argument,       0, 'h'            },
-        { "version",     no_argument,       0, 'V'            },
+        { "version",     no_argument,       0, 'v'            },
         { 0, 0, 0, 0 }
     };
 
     int opt;
-    while ((opt = getopt_long(argc, argv, "n:r:K:S:d:e:m:i:hV", long_opts, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "n:r:K:S:d:e:m:i:hv", long_opts, NULL)) != -1) {
         switch (opt) {
             case 'n': {
                 nstart = (size_t) strtoull(optarg, NULL, 10);
@@ -289,7 +289,7 @@ int main(int argc, char **argv)
                 Main_ShowHelp(argv[0]);
                 return 0;
             }
-            case 'V': {
+            case 'v': {
                 Main_ShowVersion();
                 return 0;
             }
