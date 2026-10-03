@@ -1,6 +1,14 @@
-# FDTD-HPC
+<div align="center">
 
-FDTD-HPC is a high-performance one-dimensional electromagnetic-wave simulator based on the finite-difference time-domain (FDTD) method, with serial and OpenMP execution, configurable materials and boundaries, CSV state export, plotting tools, and benchmarking support. The `docs/` directory contains the English thesis sources and the results used in the document.
+![Fdtd](docs/splash/fdtd-openmp.jpg)
+
+**libfdtd: A 1D electromagnetic wave sumulation library using FDTD + OpenMP!**
+
+</div>
+
+---
+
+**libfdtd** (or **Fdtd_OpenMP**) is a C programming language library for 1D electromagnetic wave simulation. It's a limited scope project I built in order to practice HPC concepts and C design patterns.
 
 ## Configuration
 
