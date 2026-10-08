@@ -11,6 +11,10 @@ RESULTS_DIR = results
 DOCS_DIR    = docs
 DOCS_META_DIR = $(DOCS_DIR)/meta
 
+VERSION      := $(shell sed -n 's/^\#define FDTD_VERSION "\(.*\)"/\1/p' $(INCLUDE_DIR)/fdtd/fdtd_version.h)
+DOCS_VERSION := $(shell sed -n 's/^subtitle:.*v\([0-9][0-9.]*\).*/\1/p' $(DOCS_META_DIR)/metadata.yaml)
+ARCH         = x86_64
+
 LIB       = $(DIST_DIR)/lib/libfdtd.a
 HEADER    = $(DIST_DIR)/include/fdtd.h
 HEADERS   = $(INCLUDE_DIR)/fdtd.h $(wildcard $(INCLUDE_DIR)/fdtd/*.h) $(wildcard $(INCLUDE_DIR)/fdtd/Ez/*.h)
@@ -20,8 +24,11 @@ MAIN      = $(DIST_DIR)/bin/fdtd
 BENCH     = $(DIST_DIR)/bin/benchmark
 TOOLS     = $(DIST_DIR)/bin/tools
 BUILDINFO = $(DIST_DIR)/buildinfo
+PACKAGE_NAME = libfdtd-$(ARCH)-v$(VERSION)
+PACKAGE_DIR  = $(OBJ_DIR)/package/$(PACKAGE_NAME)
+PACKAGE      = $(DIST_DIR)/$(PACKAGE_NAME).zip
 DOCS_DIST_DIR = $(DIST_DIR)/docs
-DOCS_PDF      = $(DOCS_DIST_DIR)/Fdtd_Thesis.pdf
+DOCS_PDF      = $(DOCS_DIST_DIR)/Fdtd_Thesis-v$(DOCS_VERSION).pdf
 DOCS_METADATA   = $(DOCS_META_DIR)/metadata.yaml
 DOCS_REFERENCES = $(DOCS_META_DIR)/references.bib
 DOCS_CSL        = $(DOCS_META_DIR)/ieee.csl
@@ -46,7 +53,7 @@ BENCH_NSTEPS = 1024
 BENCH_REPEAT = 10
 BENCH_SIZES  = 10000 20000 40000 80000 160000 320000 640000 1280000
 
-.PHONY: build all docs gauss gauss_images bench bench_images figures images buildinfo clean
+.PHONY: build all docs package gauss gauss_images bench bench_images figures images buildinfo clean
 
 .DELETE_ON_ERROR:
 
@@ -76,8 +83,9 @@ $(TOOLS): $(wildcard $(TOOLS_DIR)/*) | $(DIST_DIR)/bin
 	rm -rf $@
 	cp -r $(TOOLS_DIR) $@
 
-$(BUILDINFO): Makefile | $(DIST_DIR)
-	@printf '# cflags: %s\n' '$(CFLAGS)' > $@
+$(BUILDINFO): Makefile $(INCLUDE_DIR)/fdtd/fdtd_version.h | $(DIST_DIR)
+	@printf '# version: %s\n' '$(VERSION)' > $@
+	@printf '# cflags: %s\n' '$(CFLAGS)' >> $@
 	@$(CC) --version 2>/dev/null | head -n1 | sed 's/^/# compiler: /' >> $@
 
 $(GAUSS_CSV): $(MAIN) | $(RESULTS_DIR)
@@ -140,6 +148,14 @@ $(DOCS_PDF): $(DOCS_METADATA) $(DOCS_REFERENCES) $(DOCS_CSL) $(DOCS_SOURCES) | $
 		--metadata-file=$(DOCS_METADATA) \
 		--resource-path=$(DOCS_DIR)      \
 		$(DOCS_SOURCES) -o $@
+
+$(PACKAGE): build LICENSE
+	$(RM) -r $(PACKAGE_DIR) $@
+	mkdir -p $(PACKAGE_DIR)
+	cp -r $(DIST_DIR)/bin $(DIST_DIR)/include $(DIST_DIR)/lib $(BUILDINFO) LICENSE $(PACKAGE_DIR)
+	cd $(OBJ_DIR)/package && zip -qr $(abspath $@) $(PACKAGE_NAME)
+
+package: $(PACKAGE)
 
 gauss_images: $(GAUSS_IMAGES)
 

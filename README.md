@@ -2,7 +2,11 @@
 
 ![Fdtd](docs/splash/fdtd-openmp.jpg)
 
-**libfdtd: A 1D electromagnetic wave sumulation library using FDTD + OpenMP!**
+**libfdtd: A 1D electromagnetic wave simulation library using FDTD + OpenMP!**
+
+[![License](https://img.shields.io/badge/License-LGPLv3.0-blue)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-ZIP-orange)](https://github.com/yanevskiv/fdtd-openmp/releases/download/v1.0.0/libfdtd-x86_64-v1.0.0.zip)
+[![Thesis](https://img.shields.io/badge/Thesis-PDF-red)](https://github.com/yanevskiv/fdtd-openmp/releases/download/v1.0.0/Fdtd_Thesis-v1.0.pdf)
 
 </div>
 
@@ -33,7 +37,17 @@ Build the thesis PDF with Pandoc and LuaLaTeX:
 make docs
 ```
 
-The generated document is written to `dist/docs/Fdtd_Thesis.pdf`. The `all` target builds the software, figures, and thesis.
+The generated document is written to `dist/docs/Fdtd_Thesis-v<version>.pdf`, where the version is taken from the `subtitle` in `docs/meta/metadata.yaml`. The `all` target builds the software, figures, and thesis.
+
+## Packaging
+
+Create a release archive of the distribution:
+
+```sh
+make package
+```
+
+The archive is written to `dist/libfdtd-x86_64-v<version>.zip`, where the version is `FDTD_VERSION` from `include/fdtd/fdtd_version.h`. It contains `bin/`, `include/`, `lib/`, `buildinfo`, and `LICENSE` inside a top-level `libfdtd-x86_64-v<version>/` directory.
 
 ## Project structure
 
@@ -77,6 +91,7 @@ After `make clean`, the project source tree is:
 │   ├── plot_benchmark.py               - Performance plotting script
 │   ├── plot_sim.py                     - Simulation plotting script
 │   └── plot_figures.py                 - Standalone figure script
+├── LICENSE                             - LGPLv3 license text
 ├── Makefile                            - Build and result rules
 └── README.md                           - Project description
 ```
