@@ -5,12 +5,12 @@
 **libfdtd: A 1D electromagnetic wave simulation library using FDTD + OpenMP!**
 
 [![License](https://img.shields.io/badge/License-LGPLv3.0-blue)](LICENSE)
-[![Documentation](https://img.shields.io/badge/Documentation-PDF-red)](https://github.com/yanevskiv/fdtd-openmp/releases/download/v1.0.0/Fdtd_Thesis-v1.0.pdf)
+[![Documentation](https://img.shields.io/badge/Documentation-PDF-red)](docs/pdf/Fdtd_Thesis-v1.0.pdf)
 [![Download](https://img.shields.io/badge/Download-ZIP-orange)](https://github.com/yanevskiv/fdtd-openmp/releases/download/v1.0.0/libfdtd-x86_64-v1.0.0.zip)
 
 </div>
 
----
+# fdtd-openmp
 
 **libfdtd** (or **Fdtd_OpenMP**) is a C programming language library for 1D electromagnetic wave simulation. It's a limited scope project I built in order to practice HPC concepts and C design patterns.
 
